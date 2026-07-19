@@ -5,7 +5,7 @@
     "artifacts/*"
   ],
   "scripts": {
-    "dev": "pnpm -r run dev",
+    "dev": "pnpm --filter @workspace/api-server --filter @workspace/staff-portal run --parallel dev",
     "build": "pnpm -r run build"
   },
   "devDependencies": {

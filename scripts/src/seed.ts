@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { db, departmentsTable, rolesTable, usersTable, roleUserTable } from "@workspace/db";
 import bcrypt from "bcryptjs";
 
