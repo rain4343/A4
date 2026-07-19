@@ -4,7 +4,8 @@ import { dirname, resolve } from "path";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 config({ path: resolve(__dirname, "../../.env") });
 
-import { db, departmentsTable, rolesTable, usersTable, roleUserTable } from "@workspace/db";
+// Dynamic import AFTER dotenv loads env vars (ESM hoisting fix)
+const { db, departmentsTable, rolesTable, usersTable, roleUserTable } = await import("@workspace/db");
 import bcrypt from "bcryptjs";
 
 async function seed() {
