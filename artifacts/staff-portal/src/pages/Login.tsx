@@ -105,7 +105,7 @@ export default function Login() {
         </div>
 
         <p className="text-center text-slate-600 text-xs mt-6">
-          ئی-ڕێکار &copy; {new Date().getFullYear()}
+          ئی-دیوان &copy; {new Date().getFullYear()}
         </p>
       </div>
     </div>

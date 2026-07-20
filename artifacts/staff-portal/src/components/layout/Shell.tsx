@@ -121,7 +121,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
               <SidebarContent />
             </SheetContent>
           </Sheet>
-          <div className="font-bold text-white text-sm flex-1" style={ku}>ئی-ڕێکار</div>
+          <div className="font-bold text-white text-sm flex-1" style={ku}>ئی-دیوان</div>
         </header>
 
         {/* Main Content */}

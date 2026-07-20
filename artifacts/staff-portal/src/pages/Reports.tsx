@@ -163,7 +163,7 @@ export default function Reports() {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <BarChart3 className="h-4 w-4 text-indigo-300" />
-              <span className="text-indigo-300 text-xs font-medium">سیستەمی ئی-ڕێکار</span>
+              <span className="text-indigo-300 text-xs font-medium">سیستەمی ئی-دیوان</span>
             </div>
             <h1 className="text-2xl font-bold text-white">ڕاپۆرتەکان</h1>
             <p className="text-indigo-300 text-sm mt-1">ئامار و شیکاری کاری سیستەم</p>

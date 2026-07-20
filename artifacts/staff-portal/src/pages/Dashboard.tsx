@@ -100,7 +100,7 @@ export default function Dashboard() {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Activity className="h-4 w-4 text-blue-200" />
-              <span className="text-blue-200 text-xs font-medium">سیستەمی ئی-ڕێکار</span>
+              <span className="text-blue-200 text-xs font-medium">سیستەمی ئی-دیوان</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
               بەخێربێیت،{" "}
