@@ -38,7 +38,7 @@ export default function Login() {
             <img src={`${import.meta.env.BASE_URL}logo.png`} alt="لۆگۆ" className="w-72 h-72 object-contain" />
           </div>
           <h1 className="text-2xl font-extrabold text-white tracking-tight" style={{ fontFamily: "'Noto Kufi Arabic', sans-serif" }}>بەڕێوەبەرێتی پەروەردەی شارباژێڕ</h1>
-          <p className="text-xl font-extrabold mt-2" style={{ fontFamily: "'Noto Kufi Arabic', sans-serif", color: '#38bdf8' }}>سیستەمی ئی - ڕێکار</p>
+          <p className="text-xl font-extrabold mt-2" style={{ fontFamily: "'Noto Kufi Arabic', sans-serif", color: '#38bdf8' }}>سیستەمی ئی-دیوان</p>
         </div>
 
         {/* Form card */}
