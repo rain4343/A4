@@ -248,7 +248,7 @@ export default function Leaves() {
             <AlarmClock className="h-6 w-6 text-white" />
           </div>
           <div>
-            <p className="text-emerald-200 text-xs font-medium mb-1">سیستەمی ئی-دیوان</p>
+            <p className="text-emerald-200 text-xs font-medium mb-1">E-Diwan</p>
             <h1 className="text-2xl font-bold text-white">مۆڵەتەکان</h1>
             <p className="text-emerald-200 text-sm mt-0.5">داوای مۆڵەت بکە و مامەڵەی لێوەبکە</p>
           </div>

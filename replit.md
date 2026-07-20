@@ -1,4 +1,4 @@
-# ئی-دیوان — E-Diwan Staff Portal
+# E-Diwan Staff Portal
 
 Staff management portal for Sharbazher Education Directorate (بەڕێوەبەرایەتی پەروەردەی شارباژێر).
 
