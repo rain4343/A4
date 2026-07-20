@@ -108,16 +108,16 @@ export function Shell({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
-      {/* Desktop sidebar */}
+    <div className="flex h-screen overflow-hidden bg-background flex-row-reverse">
+      {/* Desktop sidebar — right side for RTL */}
       <aside className="hidden lg:flex w-64 shrink-0 flex-col">
         <SidebarContent />
       </aside>
 
-      {/* Mobile sidebar */}
+      {/* Mobile sidebar — opens from the right */}
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="lg:hidden fixed top-3 right-3 z-50 bg-slate-900 text-white hover:bg-slate-800">
+          <Button variant="ghost" size="icon" className="lg:hidden fixed top-3 left-3 z-50 bg-slate-900 text-white hover:bg-slate-800">
             <Menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
