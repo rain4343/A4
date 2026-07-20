@@ -45,7 +45,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
           </div>
           <div>
             <h2 className="text-base font-extrabold" style={{ ...ku, color: '#22c55e' }}>ب.پ.شارباژێڕ</h2>
-            <p className="text-sm font-extrabold mt-0.5" style={{ ...ku, color: '#38bdf8' }}>ئی - ڕێکار</p>
+            <p className="text-sm font-extrabold mt-0.5" style={{ ...ku, color: '#38bdf8' }}>ئی-دیوان</p>
           </div>
         </div>
       </div>
