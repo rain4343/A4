@@ -7,6 +7,8 @@ export interface AuthUser {
   email: string;
   is_system_admin: boolean;
   roles: string[];
+  /** "module.action" strings, e.g. ["documents.read", "users.create"] */
+  permissions: string[];
 }
 
 export const FORWARD_DOCUMENTS_ROLE = "ئاڕاستەکردنی نووسراو";

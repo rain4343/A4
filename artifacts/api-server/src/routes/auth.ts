@@ -1,7 +1,7 @@
 import { Router } from "express";
 import bcrypt from "bcryptjs";
 import { db } from "@workspace/db";
-import { usersTable, rolesTable, roleUserTable } from "@workspace/db/schema";
+import { usersTable, rolesTable, roleUserTable, rolePermissionsTable, permissionsTable } from "@workspace/db/schema";
 import { eq } from "drizzle-orm";
 
 const router = Router();
@@ -13,6 +13,16 @@ export async function getUserRoleNames(userId: number): Promise<string[]> {
     .innerJoin(rolesTable, eq(roleUserTable.role_id, rolesTable.id))
     .where(eq(roleUserTable.user_id, userId));
   return rows.map((r) => r.name);
+}
+
+export async function getUserPermissions(userId: number): Promise<string[]> {
+  const rows = await db
+    .select({ name: permissionsTable.name })
+    .from(roleUserTable)
+    .innerJoin(rolePermissionsTable, eq(roleUserTable.role_id, rolePermissionsTable.role_id))
+    .innerJoin(permissionsTable, eq(rolePermissionsTable.permission_id, permissionsTable.id))
+    .where(eq(roleUserTable.user_id, userId));
+  return [...new Set(rows.map((r) => r.name))];
 }
 
 // POST /api/auth/login
@@ -95,7 +105,10 @@ router.get("/auth/me", async (req, res) => {
     res.status(401).json({ error: "داخڵ نەبووی" });
     return;
   }
-  const roles = await getUserRoleNames(req.session.userId);
+  const [roles, permissions] = await Promise.all([
+    getUserRoleNames(req.session.userId),
+    getUserPermissions(req.session.userId),
+  ]);
   res.json({
     id: req.session.userId,
     username: req.session.username,
@@ -103,6 +116,7 @@ router.get("/auth/me", async (req, res) => {
     email: req.session.email,
     is_system_admin: !!req.session.isSystemAdmin,
     roles,
+    permissions,
   });
 });
 

@@ -7,18 +7,19 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
+import { hasModuleAccess } from "@/lib/usePermission";
 
 const ku: React.CSSProperties = { fontFamily: "'Noto Kufi Arabic', sans-serif" };
 
 const navItems = [
-  { icon: LayoutDashboard, label: "داشبۆرد", href: "/", accent: "text-blue-400", activeBg: "bg-blue-600" },
-  { icon: FileText, label: "نوسراوەکان", href: "/documents", accent: "text-amber-400", activeBg: "bg-amber-600" },
-  { icon: Users, label: "فەرمانبەران", href: "/staff", accent: "text-blue-400", activeBg: "bg-blue-600" },
-  { icon: Building2, label: "هۆبەکان", href: "/departments", accent: "text-emerald-400", activeBg: "bg-emerald-600" },
-  { icon: BarChart3,   label: "ڕاپۆرتەکان", href: "/reports", accent: "text-indigo-400",  activeBg: "bg-indigo-600" },
-  { icon: AlarmClock, label: "مۆڵەتەکان",  href: "/leaves",  accent: "text-emerald-400", activeBg: "bg-emerald-600" },
-  { icon: MessageCircle, label: "چات", href: "/chat", accent: "text-sky-400", activeBg: "bg-sky-600" },
-  { icon: UserCircle, label: "پڕۆفایلی من", href: "/profile", accent: "text-slate-300", activeBg: "bg-slate-600" },
+  { icon: LayoutDashboard, label: "داشبۆرد",      href: "/",            accent: "text-blue-400",    activeBg: "bg-blue-600"   },
+  { icon: FileText,        label: "نوسراوەکان",    href: "/documents",   accent: "text-amber-400",   activeBg: "bg-amber-600",   module: "documents"   },
+  { icon: Users,           label: "فەرمانبەران",   href: "/staff",       accent: "text-blue-400",    activeBg: "bg-blue-600",    module: "users"       },
+  { icon: Building2,       label: "هۆبەکان",       href: "/departments", accent: "text-emerald-400", activeBg: "bg-emerald-600", module: "departments" },
+  { icon: BarChart3,       label: "ڕاپۆرتەکان",    href: "/reports",     accent: "text-indigo-400",  activeBg: "bg-indigo-600",  module: "reports"     },
+  { icon: AlarmClock,      label: "مۆڵەتەکان",     href: "/leaves",      accent: "text-emerald-400", activeBg: "bg-emerald-600", module: "cases"       },
+  { icon: MessageCircle,   label: "چات",            href: "/chat",        accent: "text-sky-400",     activeBg: "bg-sky-600"    },
+  { icon: UserCircle,      label: "پڕۆفایلی من",   href: "/profile",     accent: "text-slate-300",   activeBg: "bg-slate-600"  },
 ];
 
 const adminNavItems = [
@@ -33,7 +34,13 @@ export function Shell({ children }: { children: React.ReactNode }) {
     return name.trim().split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase() || "?";
   }
 
-  const allNavItems = user?.is_system_admin ? [...navItems, ...adminNavItems] : navItems;
+  // Show a nav item if it has no module requirement OR the user has access to that module
+  const visibleNavItems = navItems.filter(item =>
+    !item.module || hasModuleAccess(user, item.module)
+  );
+  const allNavItems = user?.is_system_admin
+    ? [...visibleNavItems, ...adminNavItems]
+    : visibleNavItems;
 
   const SidebarContent = () => (
     <div className="flex h-full flex-col" dir="rtl" style={{ background: "linear-gradient(180deg, #0f172a 0%, #1a2744 100%)" }}>
@@ -80,57 +87,51 @@ export function Shell({ children }: { children: React.ReactNode }) {
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
               {initials(user.full_name || user.username)}
             </div>
-            <div className="min-w-0 flex-1" style={ku}>
-              <p className="text-xs font-medium text-white truncate">{user.full_name || user.username}</p>
-              <p className="text-[10px] text-slate-500 truncate">@{user.username}</p>
+            <div className="flex-1 min-w-0" dir="rtl">
+              <p className="text-sm font-medium text-white truncate" style={ku}>{user.full_name || user.username}</p>
+              <p className="text-xs text-slate-400 truncate" style={ku}>
+                {user.is_system_admin ? "بەڕێوەبەری سەرەکی" : user.roles[0] ?? "فەرمانبەر"}
+              </p>
             </div>
           </div>
         )}
         <button
           onClick={logout}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-400 hover:bg-rose-500/10 hover:text-rose-400 transition-colors"
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-400 hover:bg-white/5 hover:text-white transition-all"
           style={ku}
         >
           <LogOut className="h-4 w-4 shrink-0" />
-          دەرچوون
+          چوونەدەرەوە
         </button>
       </div>
     </div>
   );
 
   return (
-    <div className="flex min-h-screen bg-background" dir="rtl">
-      {/* Desktop Sidebar */}
-      <div className="hidden md:block md:w-60 shrink-0">
-        <div className="sticky top-0 h-screen shadow-xl shadow-black/20">
+    <div className="flex h-screen overflow-hidden bg-background">
+      {/* Desktop sidebar */}
+      <aside className="hidden lg:flex w-64 shrink-0 flex-col">
+        <SidebarContent />
+      </aside>
+
+      {/* Mobile sidebar */}
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button variant="ghost" size="icon" className="lg:hidden fixed top-3 right-3 z-50 bg-slate-900 text-white hover:bg-slate-800">
+            <Menu className="h-5 w-5" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="right" className="w-64 p-0 border-0">
           <SidebarContent />
+        </SheetContent>
+      </Sheet>
+
+      {/* Main content */}
+      <main className="flex-1 overflow-y-auto">
+        <div className="p-6 max-w-7xl mx-auto" dir="rtl">
+          {children}
         </div>
-      </div>
-
-      <div className="flex flex-1 flex-col overflow-hidden min-w-0">
-        {/* Mobile Header */}
-        <header className="flex h-14 items-center gap-4 px-4 md:hidden bg-[#0f172a] border-b border-white/5">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-slate-300 hover:text-white hover:bg-white/5">
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">مێنو</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-60 p-0 border-none">
-              <SidebarContent />
-            </SheetContent>
-          </Sheet>
-          <div className="font-bold text-white text-sm flex-1" style={ku}>E-Diwan</div>
-        </header>
-
-        {/* Main Content */}
-        <main className="flex-1 overflow-y-auto p-5 md:p-8">
-          <div className="mx-auto max-w-6xl">
-            {children}
-          </div>
-        </main>
-      </div>
+      </main>
     </div>
   );
 }
